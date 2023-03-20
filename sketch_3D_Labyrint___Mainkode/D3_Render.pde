@@ -433,7 +433,7 @@ class simplified3D {
     if (Map.get(integer)==None){
      return 0; 
     }
-    println(objectExist(integer));
+    
     //Alt nedenunder gør egentlig bare at den ser hvad indekset er for den variabel man vil ændre, og ændre det derefter.
     StringList valuesForObject = new StringList();
     valuesForObject.append("xPos");
@@ -506,20 +506,22 @@ class simplified3D {
     //Alt nedenunder er fordi asin kun kan give fra 90 til -90 grader.
     if (cameraHeading.z>=0&&cameraHeading.x>0) {
       viewAngleX= viewAngleX+180;
-      println("1");
+      println("hej 1");
     }
     if (cameraHeading.z<0&&cameraHeading.x>=0) {
       viewAngleX=(90-(-1*viewAngleX))+90;
-      println("2");
+      println("hej 2");
     }
-    if (cameraHeading.z>=0&&cameraHeading.x<0) {
+    if (cameraHeading.z>=0&&cameraHeading.x<=0) {
       viewAngleX = (360-viewAngleX);
-      println("3");
+      println("hej 3");
     }
-    if (cameraHeading.z<0&&cameraHeading.x<=0) {
+    if (cameraHeading.z<0&&cameraHeading.x<0) {
       viewAngleX = -1*viewAngleX;
-      println("4");
+      println("hej 4");
     }
+    println("cameraHeading.z: "+cameraHeading.z);
+    println("cameraHeading.x: "+cameraHeading.x);
     println("setview viewAngleX: "+viewAngleX);
   }
 

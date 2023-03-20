@@ -8,9 +8,9 @@ float mouseSensivety = 30;
 float xPos = 0;
 float yPos = 0;
 float zPos = 0;
-float viewXPos = 0;
+float viewXPos = -10;
 float viewYPos = 0;
-float viewZPos = -200;
+float viewZPos = 00;
 
 
 simplified3D World = new simplified3D();
@@ -32,8 +32,7 @@ void setup() {
   fullScreen(P3D);
   World.intiliazesimplified3D(xPos, yPos, zPos, viewXPos, viewYPos, viewZPos);
 
-  World.freeFlyMode(false
-  );
+  World.freeFlyMode(false);
 
   Kasse1 = World.objectBoxAddition(0, 0, 400, 100, 100, 100, 255, 0, 0, 0); //Rød
   Kasse2 = World.objectBoxAddition(0, -100, 400, 100, 100, 100, 0, 255, 0, 0); //Grøn
@@ -44,19 +43,15 @@ void setup() {
   ståKasse2 = World.objectBoxAddition(300, 0, -400, 100, 100, 100, 155, 155, 155, 0);
   rykkeKasse = World.objectBoxAddition(0, -50, -400, 100, 70, 300, 155, 155, 155, 0);
 
-  //int counter = 0;
-  //for (int x=-3000; x<3000; x=x+100) {
-  //  for (int z=-3000; z<3000; z=z+100) {
-  //    for (int y=-2000; y>-3000; y=y-100) {
+ 
+  int counter = 0;
+  for (int x=-300; x<300; x=x+100) {
+    for (int z=-300; z<300; z=z+100) {
 
-  //       World.objectBoxAddition(x, y-200, z, 100, 100, 100, 155, 155, 155, 2);
-  //      counter++;
-  //    }
-  //  }
-  //}
-
-
-
+      test[counter]= World.objectBoxAddition(x, -200, z, 100, 10, 100, 155, 155, 155, 2);
+      counter++;
+    }
+  }
 }
 
 void draw() {
@@ -74,13 +69,13 @@ void draw() {
   }
 
 
-  //for (int i = 0; i<36;i++){
+  for (int i = 0; i<36;i++){
 
 
-  //  if (World.objectExist(test[i])==true){
-  //  World.changeObject(test[i],"yPos",World.objectInfo(test[i],"yPos")+1);
-  //  }
-  //}
+    if (World.objectExist(test[i])==true){
+    World.changeObject(test[i],"yPos",World.objectInfo(test[i],"yPos")+1);
+    }
+  }
   //println(World.lookingAt());
 
   //if (frameCount==200){
