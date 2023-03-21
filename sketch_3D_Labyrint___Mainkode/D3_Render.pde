@@ -506,23 +506,20 @@ class simplified3D {
     //Alt nedenunder er fordi asin kun kan give fra 90 til -90 grader.
     if (cameraHeading.z>=0&&cameraHeading.x>0) {
       viewAngleX= viewAngleX+180;
-      println("hej 1");
     }
     if (cameraHeading.z<0&&cameraHeading.x>=0) {
       viewAngleX=(90-(-1*viewAngleX))+90;
-      println("hej 2");
+      
     }
     if (cameraHeading.z>=0&&cameraHeading.x<=0) {
       viewAngleX = (360-viewAngleX);
-      println("hej 3");
+      
     }
     if (cameraHeading.z<0&&cameraHeading.x<0) {
       viewAngleX = -1*viewAngleX;
-      println("hej 4");
+      
     }
-    println("cameraHeading.z: "+cameraHeading.z);
-    println("cameraHeading.x: "+cameraHeading.x);
-    println("setview viewAngleX: "+viewAngleX);
+   
   }
 
   void freeFlyMode(boolean wantedState) {
@@ -603,7 +600,48 @@ class simplified3D {
           }
 
           if (checkSize<1) {
-
+            //Find vektor
+   
+            
+            PVector reverseLookingDirection = new PVector(centerHeadingX, centerHeadingY, centerHeadingZ);
+            reverseLookingDirection.normalize();
+            println(reverseLookingDirection);
+            reverseLookingDirection.mult(-1);
+            println(reverseLookingDirection);
+            //PVector reverseLookingDirection = outerCheckVector;
+            //reverseLookingDirection.normalize();
+            //reverseLookingDirection.mult(-1);
+            
+            //Lav koordinater til checking
+            println(Map.get(newCheckObjects.get(0)));
+            PVector sideCheckingCoords = new PVector(Map.get(newCheckObjects.get(0))[0], Map.get(newCheckObjects.get(0))[1], Map.get(newCheckObjects.get(0))[2]);
+            
+            int testCounter = 0;
+            while (1==1) {
+              testCounter++;
+              if (advcollision(//Check om det minus vektoren giver igen kollision med boksen
+            Map.get(newCheckObjects.get(0))[0]-Map.get(newCheckObjects.get(0))[3]/2, Map.get(newCheckObjects.get(0))[1]-Map.get(newCheckObjects.get(0))[4]/2, Map.get(newCheckObjects.get(0))[2]-Map.get(newCheckObjects.get(0))[5]/2,
+            Map.get(newCheckObjects.get(0))[0]+Map.get(newCheckObjects.get(0))[3]/2, Map.get(newCheckObjects.get(0))[1]+Map.get(newCheckObjects.get(0))[4]/2, Map.get(newCheckObjects.get(0))[2]+Map.get(newCheckObjects.get(0))[5]/2,
+            sideCheckingCoords.x-0.1+reverseLookingDirection.x, sideCheckingCoords.y-0.1+reverseLookingDirection.y, sideCheckingCoords.z-0.1+reverseLookingDirection.z,
+            sideCheckingCoords.x+0.1+reverseLookingDirection.x, sideCheckingCoords.y+0.1+reverseLookingDirection.y, sideCheckingCoords.z+0.1+reverseLookingDirection.z)==false){
+              
+              //Hvis ja så er det koordinaterne.
+              objectBoxAddition(sideCheckingCoords.x, sideCheckingCoords.y, sideCheckingCoords.z, 5, 5, 5, 255, 0, 0, 0);
+              println("hej");
+              
+             
+            }
+               //Hvis ikke så plus vektoren
+              
+               sideCheckingCoords.add(reverseLookingDirection);
+               
+               
+              objectBoxAddition(sideCheckingCoords.x, sideCheckingCoords.y, sideCheckingCoords.z, 5, 5, 5, 255, 0, 0, 0);
+              
+              if (testCounter==30){
+               break; 
+              }
+            }
             return  newCheckObjects.get(0);
           }
         }
