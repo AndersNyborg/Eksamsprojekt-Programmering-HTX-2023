@@ -553,7 +553,9 @@ class simplified3D {
         checkObjects.append(i);
       }
     }
-
+float textX = 0;
+float textY = 0;
+float textZ = 0;
 
     while (checkObjects.size()>0) {
 
@@ -576,6 +578,9 @@ class simplified3D {
             newCheckObjects.append(checkObjects.get(i));
 
             objectsInsideCheckCoords=true;
+             textX = checkCoords.get(vectorI).x;
+             textY = checkCoords.get(vectorI).y;
+             textZ = checkCoords.get(vectorI).z;
           }
         }
 
@@ -603,18 +608,19 @@ class simplified3D {
             //Find vektor
    
             
-            PVector reverseLookingDirection = new PVector(centerHeadingX, centerHeadingY, centerHeadingZ);
+            PVector reverseLookingDirection = new PVector(centerHeadingX-centerX, centerHeadingY-centerY, centerHeadingZ-centerZ);
             reverseLookingDirection.normalize();
-            println(reverseLookingDirection);
+           
             reverseLookingDirection.mult(-1);
-            println(reverseLookingDirection);
+            
             //PVector reverseLookingDirection = outerCheckVector;
             //reverseLookingDirection.normalize();
             //reverseLookingDirection.mult(-1);
             
             //Lav koordinater til checking
-            println(Map.get(newCheckObjects.get(0)));
-            PVector sideCheckingCoords = new PVector(Map.get(newCheckObjects.get(0))[0], Map.get(newCheckObjects.get(0))[1], Map.get(newCheckObjects.get(0))[2]);
+            
+            //PVector sideCheckingCoords = new PVector(Map.get(newCheckObjects.get(0))[0], Map.get(newCheckObjects.get(0))[1], Map.get(newCheckObjects.get(0))[2]);
+            PVector sideCheckingCoords = new PVector(textX,textY,textZ);
             
             int testCounter = 0;
             while (1==1) {
@@ -627,7 +633,7 @@ class simplified3D {
               
               //Hvis ja så er det koordinaterne.
               objectBoxAddition(sideCheckingCoords.x, sideCheckingCoords.y, sideCheckingCoords.z, 5, 5, 5, 255, 0, 0, 0);
-              println("hej");
+              
               
              
             }
@@ -636,13 +642,19 @@ class simplified3D {
                sideCheckingCoords.add(reverseLookingDirection);
                
                
-              objectBoxAddition(sideCheckingCoords.x, sideCheckingCoords.y, sideCheckingCoords.z, 5, 5, 5, 255, 0, 0, 0);
+              
               
               if (testCounter==30){
                break; 
               }
             }
+            println("Xpos: " +objectInfo(newCheckObjects.get(0),"xPos"));
+            println("Ypos: " +objectInfo(newCheckObjects.get(0),"yPos"));
+            println("Zpos: " +objectInfo(newCheckObjects.get(0),"zPos"));
+            println(textX,textY,textZ);
+            objectBoxAddition(textX,textY,textZ, 5, 5, 5, 0, 0, 255, 0);
             return  newCheckObjects.get(0);
+            
           }
         }
       }

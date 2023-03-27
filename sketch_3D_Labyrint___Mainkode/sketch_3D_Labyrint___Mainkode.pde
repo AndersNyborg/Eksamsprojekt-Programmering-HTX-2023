@@ -38,6 +38,7 @@ void setup() {
   Kasse2 = World.objectBoxAddition(0, -100, 400, 100, 100, 100, 0, 255, 0, 0); //Grøn
   Kasse3 = World.objectBoxAddition(100, -100, 400, 100, 100, 100, 0, 0, 255, 0); //Blue
   Kasse4 = World.objectBoxAddition(-100, 100, 400, 100, 100, 100, 155, 155, 155, 0); //grå
+  World.objectBoxAddition(0, 0, 0, 100, 100, 100, 155, 155, 155, 0);
 
   ståKasse1 = World.objectBoxAddition(-300, 0, -400, 100, 100, 100, 155, 155, 155, 0);
   ståKasse2 = World.objectBoxAddition(300, 0, -400, 100, 100, 100, 155, 155, 155, 0);
@@ -69,13 +70,13 @@ void draw() {
   }
 
 
-  for (int i = 0; i<36;i++){
+  //for (int i = 0; i<36;i++){
 
 
-    if (World.objectExist(test[i])==true){
-    World.changeObject(test[i],"yPos",World.objectInfo(test[i],"yPos")+1);
-    }
-  }
+  //  if (World.objectExist(test[i])==true){
+  //  World.changeObject(test[i],"yPos",World.objectInfo(test[i],"yPos")+1);
+  //  }
+  //}
   //println(World.lookingAt());
 
   //if (frameCount==200){
@@ -102,8 +103,9 @@ void mouseMoved() {
 }
 
 void mousePressed() {
-  if (World.lookingAt() != 100) {
+  int object = World.lookingAt();
+  if (object != 100) {
 
-    World.deleteObject( World.lookingAt());
+    //World.deleteObject( object);
   }
 }
