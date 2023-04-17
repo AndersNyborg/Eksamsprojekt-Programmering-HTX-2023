@@ -45,6 +45,7 @@ class simplified3D {
 
     //noCursor();
     perspective(PI/3.0, (float) width/height, 1, renderDistance);
+   
   }
 
 
@@ -430,10 +431,10 @@ class simplified3D {
 
 
   float objectInfo(int integer, String variable) {
-    if (Map.get(integer)==None){
-     return 0; 
+    if (Map.get(integer)==None) {
+      return 0;
     }
-    
+
     //Alt nedenunder gør egentlig bare at den ser hvad indekset er for den variabel man vil ændre, og ændre det derefter.
     StringList valuesForObject = new StringList();
     valuesForObject.append("xPos");
@@ -454,16 +455,16 @@ class simplified3D {
         index = i;
       }
     }
-  
+
 
     return(Map.get(integer)[index]);
   }
 
   void changeObject(int integer, String variable, float newValue) {
     //if (Map.get(integer)==None){
-    // return; 
+    // return;
     //}
-    
+
     float[] oldInfo = Map.get(integer);
 
     //Alt nedenunder gør egentlig bare at den ser hvad indekset er for den variabel man vil ændre, og ændre det derefter.
@@ -509,17 +510,13 @@ class simplified3D {
     }
     if (cameraHeading.z<0&&cameraHeading.x>=0) {
       viewAngleX=(90-(-1*viewAngleX))+90;
-      
     }
     if (cameraHeading.z>=0&&cameraHeading.x<=0) {
       viewAngleX = (360-viewAngleX);
-      
     }
     if (cameraHeading.z<0&&cameraHeading.x<0) {
       viewAngleX = -1*viewAngleX;
-      
     }
-   
   }
 
   void freeFlyMode(boolean wantedState) {
@@ -553,9 +550,9 @@ class simplified3D {
         checkObjects.append(i);
       }
     }
-float textX = 0;
-float textY = 0;
-float textZ = 0;
+    float textX = 0;
+    float textY = 0;
+    float textZ = 0;
 
     while (checkObjects.size()>0) {
 
@@ -578,9 +575,9 @@ float textZ = 0;
             newCheckObjects.append(checkObjects.get(i));
 
             objectsInsideCheckCoords=true;
-             textX = checkCoords.get(vectorI).x;
-             textY = checkCoords.get(vectorI).y;
-             textZ = checkCoords.get(vectorI).z;
+            textX = checkCoords.get(vectorI).x;
+            textY = checkCoords.get(vectorI).y;
+            textZ = checkCoords.get(vectorI).z;
           }
         }
 
@@ -606,55 +603,43 @@ float textZ = 0;
 
           if (checkSize<1) {
             //Find vektor
-   
-            
+
+
             PVector reverseLookingDirection = new PVector(centerHeadingX-centerX, centerHeadingY-centerY, centerHeadingZ-centerZ);
             reverseLookingDirection.normalize();
-           
+
             reverseLookingDirection.mult(-1);
-            
-            //PVector reverseLookingDirection = outerCheckVector;
-            //reverseLookingDirection.normalize();
-            //reverseLookingDirection.mult(-1);
-            
-            //Lav koordinater til checking
-            
+
+
+            //FIND HVILKEN SIDE:
+
             //PVector sideCheckingCoords = new PVector(Map.get(newCheckObjects.get(0))[0], Map.get(newCheckObjects.get(0))[1], Map.get(newCheckObjects.get(0))[2]);
-            PVector sideCheckingCoords = new PVector(textX,textY,textZ);
-            
+            PVector sideCheckingCoords = new PVector(textX, textY, textZ);
+
+
             int testCounter = 0;
-            while (1==1) {
+            while (true) {
               testCounter++;
               if (advcollision(//Check om det minus vektoren giver igen kollision med boksen
-            Map.get(newCheckObjects.get(0))[0]-Map.get(newCheckObjects.get(0))[3]/2, Map.get(newCheckObjects.get(0))[1]-Map.get(newCheckObjects.get(0))[4]/2, Map.get(newCheckObjects.get(0))[2]-Map.get(newCheckObjects.get(0))[5]/2,
-            Map.get(newCheckObjects.get(0))[0]+Map.get(newCheckObjects.get(0))[3]/2, Map.get(newCheckObjects.get(0))[1]+Map.get(newCheckObjects.get(0))[4]/2, Map.get(newCheckObjects.get(0))[2]+Map.get(newCheckObjects.get(0))[5]/2,
-            sideCheckingCoords.x-0.1+reverseLookingDirection.x, sideCheckingCoords.y-0.1+reverseLookingDirection.y, sideCheckingCoords.z-0.1+reverseLookingDirection.z,
-            sideCheckingCoords.x+0.1+reverseLookingDirection.x, sideCheckingCoords.y+0.1+reverseLookingDirection.y, sideCheckingCoords.z+0.1+reverseLookingDirection.z)==false){
-              
-              //Hvis ja så er det koordinaterne.
-              objectBoxAddition(sideCheckingCoords.x, sideCheckingCoords.y, sideCheckingCoords.z, 5, 5, 5, 255, 0, 0, 0);
-              
-              
-             
-            }
-               //Hvis ikke så plus vektoren
-              
-               sideCheckingCoords.add(reverseLookingDirection);
-               
-               
-              
-              
-              if (testCounter==30){
-               break; 
+                Map.get(newCheckObjects.get(0))[0]-Map.get(newCheckObjects.get(0))[3]/2, Map.get(newCheckObjects.get(0))[1]-Map.get(newCheckObjects.get(0))[4]/2, Map.get(newCheckObjects.get(0))[2]-Map.get(newCheckObjects.get(0))[5]/2,
+                Map.get(newCheckObjects.get(0))[0]+Map.get(newCheckObjects.get(0))[3]/2, Map.get(newCheckObjects.get(0))[1]+Map.get(newCheckObjects.get(0))[4]/2, Map.get(newCheckObjects.get(0))[2]+Map.get(newCheckObjects.get(0))[5]/2,
+                sideCheckingCoords.x-0.1+reverseLookingDirection.x, sideCheckingCoords.y-0.1+reverseLookingDirection.y, sideCheckingCoords.z-0.1+reverseLookingDirection.z,
+                sideCheckingCoords.x+0.1+reverseLookingDirection.x, sideCheckingCoords.y+0.1+reverseLookingDirection.y, sideCheckingCoords.z+0.1+reverseLookingDirection.z)==false) {
+
+                //Hvis false så er det koordinaterne.
+                objectBoxAddition(sideCheckingCoords.x, sideCheckingCoords.y, sideCheckingCoords.z, 5, 5, 5, 255, 0, 0, 0);
+                break;
+              } else {//Hvis ikke så plus vektoren
+                sideCheckingCoords.add(reverseLookingDirection);
+
+                if (testCounter==30) { //For en sikkerhedskyld
+                  break;
+                }
               }
+              
             }
-            println("Xpos: " +objectInfo(newCheckObjects.get(0),"xPos"));
-            println("Ypos: " +objectInfo(newCheckObjects.get(0),"yPos"));
-            println("Zpos: " +objectInfo(newCheckObjects.get(0),"zPos"));
-            println(textX,textY,textZ);
-            objectBoxAddition(textX,textY,textZ, 5, 5, 5, 0, 0, 255, 0);
-            return  newCheckObjects.get(0);
             
+            return  newCheckObjects.get(0);
           }
         }
       }
@@ -675,10 +660,10 @@ float textZ = 0;
   int lookingAt() {
     return objectInLine(cameraXPos, cameraYPos, cameraZPos, cameraViewXPos+cameraXPos, cameraViewYPos+cameraYPos, cameraViewZPos+cameraZPos, float(renderDistance));
   }
-  
-  boolean objectExist(int index){
-    if (Map.get(index)==None){
-     return false;
+
+  boolean objectExist(int index) {
+    if (Map.get(index)==None) {
+      return false;
     }
     return true;
   }
