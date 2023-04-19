@@ -8,9 +8,9 @@ float mouseSensivety = 30;
 float xPos = 0;
 float yPos = 0;
 float zPos = 0;
-float viewXPos = -10;
+float viewXPos = 0;
 float viewYPos = 0;
-float viewZPos = 00;
+float viewZPos = -10;
 
 
 simplified3D World = new simplified3D();
@@ -38,7 +38,7 @@ void setup() {
   Kasse2 = World.objectBoxAddition(0, -100, 400, 100, 100, 100, 0, 255, 0, 0); //Grøn
   Kasse3 = World.objectBoxAddition(100, -100, 400, 100, 100, 100, 0, 0, 255, 0); //Blue
   Kasse4 = World.objectBoxAddition(-100, 100, 400, 100, 100, 100, 155, 155, 155, 0); //grå
-  World.objectBoxAddition(0, 0, 0, 100, 100, 100, 155, 155, 155, 0);
+  //World.objectBoxAddition(0, 0, 0, 100, 100, 100, 155, 155, 155, 0);
 
   ståKasse1 = World.objectBoxAddition(-300, 0, -400, 100, 100, 100, 155, 155, 155, 0);
   ståKasse2 = World.objectBoxAddition(300, 0, -400, 100, 100, 100, 155, 155, 155, 0);
