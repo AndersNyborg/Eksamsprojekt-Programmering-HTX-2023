@@ -19,7 +19,7 @@ class simplified3D {
   float viewAngleY = 0;
 
   float playerHeight = 100;
-  float jumpHeight = 10;
+  float jumpHeight = 15;
 
   boolean freeFly = true;
   int renderDistance = 3000;

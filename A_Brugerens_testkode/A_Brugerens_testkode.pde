@@ -32,7 +32,7 @@ void setup() {
   fullScreen(P3D);
   World.intiliazesimplified3D(xPos, yPos, zPos, viewXPos, viewYPos, viewZPos);
 
-  World.freeFlyMode(true);
+  World.freeFlyMode(false);
 
   Kasse1 = World.objectBoxAddition(0, 0, 400, 100, 100, 100, 255, 0, 0, 0); //Rød
   Kasse2 = World.objectBoxAddition(0, -100, 400, 100, 100, 100, 0, 255, 0, 0); //Grøn

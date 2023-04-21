@@ -1,3 +1,4 @@
+IntList controls = new IntList();
 void simplified3DkeyPressed() {
     //Tilføj knappen der er trykket ned til listen over keys der er trykket ned samtidig.
     controls.append(keyCode);
