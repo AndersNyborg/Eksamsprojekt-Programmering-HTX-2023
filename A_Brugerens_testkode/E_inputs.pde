@@ -48,13 +48,13 @@ void simplified3DkeyPressed() {
         viewAngleX = 360-(-1*viewAngleX);
       }
 
-      cameraViewZPos = sin(radians(viewAngleX)); //Få lavet Z pos, hvor at det er indregnet at hvis y er høj, skal værdien være lav.
-      cameraViewXPos = cos(radians(viewAngleX)); //Få lavet X pos, hvor at det er indregnet at hvis y er høj, skal værdien være lav.
+      cameraViewZPos = sin(radians(viewAngleX)); //Få lavet til enhedscirklen.
+      cameraViewXPos = cos(radians(viewAngleX)); //Få lavet til enhedscirklen.
 
-      float test = sqrt(-1*(pow(cameraViewYPos, 2)-1)*(pow(cameraViewXPos, 2)+pow(cameraViewZPos, 2)))/(pow(cameraViewYPos, 2)-1);
+      float divider = sqrt(-1*(pow(cameraViewYPos, 2)-1)*(pow(cameraViewXPos, 2)+pow(cameraViewZPos, 2)))/(pow(cameraViewYPos, 2)-1); //Formlen for dette kan ses i beregningerne
 
-      cameraViewXPos /= test;
-      cameraViewZPos /= test;
+      cameraViewXPos /= divider;//Formlen for dette kan ses i beregningerne
+      cameraViewZPos /= divider;//Formlen for dette kan ses i beregningerne
 
 
 

@@ -1,8 +1,11 @@
 boolean currentlyJumping = false;
 float jumpAdd = 0;
+float fallingSpeed = 0;
 
 void updateCamera() {
-
+  
+  //Det hjælper meget at kigge på rutediagrammet for at forstå hvad der sker.
+  
   //Kameraets (spillerens syn) placering bliver opdateret ved at tage den nuværende position for kameraet og addere cameraAddXPos, cameraAddYPos og cameraAddZPos
   resetCameraAddValues();//Først bliver tilføjeses variablerne cameraAddXPos osv. sat til 0
 
@@ -25,12 +28,13 @@ void updateCamera() {
       } else { //Hvis et hop er igang
         calcOngoingJump();
       }
+      //Kommer der til at ske en kollision ved bevægelsen:
     }
-
-
-    //Kommer der til at ske en kollision ved bevægelsen:
     if (afterMovementInsideObjectCheck()==true) {
       resetCameraAddValues(); //Hvis man vil komme til at støde ind i noget, sættes tillæggelserne til 0
+      if (freeFly==false && standingOnground()==false) { //Hvis man skal falde
+        calcFallingYAddValue(); //Beregn hvor hurtigt man skal falde
+      }
       insideObjectCalc(); //Beregn evt. x,y og z værditillægelser, hvis man er inde i et object
     }
   } else { //Hvis der ikke er trykket nogen knapper ned
@@ -59,14 +63,27 @@ void resetCameraAddValues() {
 }
 
 void calcFallingYAddValue() {
-  if (standingOnground()==true) {
+  if (standingOnground()==true) { //Hvis man står på jorden skal man ikke falde videre ned.
     cameraAddYPos=0;
   } else {
 
-    cameraAddYPos=-10;
+    fallingSpeed += 0.75; //Hvis man ikke står på jorden, skal man falde hurtigere og hurtigere
+    int objectUnderFeet = objectInLine(cameraXPos, cameraYPos, cameraZPos, cameraXPos, cameraYPos-1, cameraZPos, playerHeight+21+fallingSpeed); //Find ud af hvilket object der er under fødderne
+
+    if (objectUnderFeet==100 || -1*makeNumerical((objectInfo(objectUnderFeet, "yPos")+objectInfo(objectUnderFeet, "yDim")/2))>fallingSpeed) { //Hvis der ikke er noget object under fødderne eller afstanden ned til til er mere end hvor meget der skal faldes med
+      cameraAddYPos=-fallingSpeed;
+    } else { //Hvis der er mindre ned til objektet under end, end fallingspeed
+      cameraAddYPos=-1*makeNumerical((cameraYPos-playerHeight-21)-(objectInfo(objectUnderFeet, "yPos")+objectInfo(objectUnderFeet, "yDim")/2)) //beregnelse af hvor langt der er ned til objektet under ens fødder.
+        ;
+    }
   }
 }
-
+float makeNumerical(float value) { //En hjælpefunktion som gør en værdi numerisk, altså altid posetiv.
+  if (value >= 0) {
+    return value;
+  }
+  return value*-1;
+}
 void updateCameraXZAddValues(IntList keysPressed) {
   //Beregningen for hvad cameraAddXPos osv. skal være fungerer ved at tage en knap ad gangen fra controls listen.
   //Herefter bliver fx. cameraAddXPos beregnet alt efter hvor meget man kigger mod x og hvad movementspeed er.
@@ -141,8 +158,9 @@ boolean standingOnground() {
       if (advcollision(//For om ens fødder er i noget
         Map.get(i)[0]-Map.get(i)[3]/2, Map.get(i)[1]-Map.get(i)[4]/2, Map.get(i)[2]-Map.get(i)[5]/2,
         Map.get(i)[0]+Map.get(i)[3]/2, Map.get(i)[1]+Map.get(i)[4]/2, Map.get(i)[2]+Map.get(i)[5]/2,
-        cameraXPos-20, cameraYPos+cameraAddYPos-playerHeight-21 , cameraZPos-20,
-        cameraXPos+20, cameraYPos+cameraAddYPos+20, cameraZPos+20)==true) {
+        cameraXPos-20, cameraYPos-playerHeight-21, cameraZPos-20, //der bliver sammenlignet med spillersposition, og der er minusset med -21 og ikke -20, fordi man ikke skal være nede i objektet under end, men bare stå på det.
+        cameraXPos+20, cameraYPos+20, cameraZPos+20)==true) {
+        fallingSpeed = 0;
         return true;
       }
     }
@@ -151,18 +169,18 @@ boolean standingOnground() {
 }
 
 void startJump() {
-  jumpAdd = jumpHeight;
+  jumpAdd = jumpHeight; //JumpAdd er hvad der løbende vil blive lagt til cameraAddYPos, så hoppet bliver gradvis.
   cameraAddYPos = jumpAdd;
   currentlyJumping = true;
 }
 
 void calcOngoingJump() {
 
-  if (jumpAdd <= 0) {
+  if (jumpAdd <= 0) { //Hvis hoppet er færdig
     currentlyJumping = false;
   } else {
-    jumpAdd -= jumpHeight/10;
-    cameraAddYPos = jumpAdd;
+    jumpAdd -= jumpHeight/10; //Der trækkes hele tiden 10% af det oprindelige fra, så hoppet bliver gradvis.
+    cameraAddYPos = jumpAdd; //Der bliver lagt til jumpadd
   }
 }
 
@@ -184,15 +202,14 @@ boolean afterMovementInsideObjectCheck() {
 
 void insideObjectCalc() {
 
-
-  for (int i = 0; i<Map.size(); i++) { //For om man er inde i noget
-    if (Map.get(i)!=None) {
+  for (int i = 0; i<Map.size(); i++) { //Render igennem alle objektor
+    if (Map.get(i)!=None) { //Gider ikke sammenligne hvis objektet ikke findes længere
       if (advcollision(
-        Map.get(i)[0]-Map.get(i)[3]/2, Map.get(i)[1]-Map.get(i)[4]/2, Map.get(i)[2]-Map.get(i)[5]/2,
+        Map.get(i)[0]-Map.get(i)[3]/2, Map.get(i)[1]-Map.get(i)[4]/2, Map.get(i)[2]-Map.get(i)[5]/2, //Er man inde i noget.
         Map.get(i)[0]+Map.get(i)[3]/2, Map.get(i)[1]+Map.get(i)[4]/2, Map.get(i)[2]+Map.get(i)[5]/2,
         cameraXPos-20, cameraYPos-playerHeight-20, cameraZPos-20,
-        cameraXPos+20, cameraYPos+20, cameraZPos+20)==true) {
-        float[] distanceToEdge = new float[6];
+        cameraXPos+20, cameraYPos+20, cameraZPos+20)==true) { //Hvis ja så skal der nu regnes ud hvilken vej man skal skubbes for at komme mest naturlig ud.
+        float[] distanceToEdge = new float[6]; //Der bliver lavet et floatarray, som skal indeholde hvor langt der er til alle kanter, fra hvor kameraet et nu.
 
         distanceToEdge[0] = Map.get(i)[0]-Map.get(i)[3]/2-cameraXPos-20; //Først hvor der står alt det med Map findes x-koordinatet til det ene punkt (og derved hele kanten) herefter fratakkes cameraXpositoinen, for derved at få differensen mellem kamerapunktet og  kanten. til sidst trækkes de 20 fra, som stammer fra at vi søger inden for et 20 pixels område
         distanceToEdge[1] = Map.get(i)[0]+Map.get(i)[3]/2-cameraXPos+20;
@@ -201,42 +218,41 @@ void insideObjectCalc() {
         distanceToEdge[4] = Map.get(i)[1]-Map.get(i)[4]/2-cameraYPos-20;
         distanceToEdge[5] = Map.get(i)[1]+Map.get(i)[4]/2-cameraYPos+playerHeight+20;
 
-        for (int n=0; n<6; n++) {
-          if (distanceToEdge[n]<0) { // For at få den numeriske værdi.
-            distanceToEdge[n] *= -1;
+        for (int n=0; n<6; n++) { //Alle distancerne skal være numeriske for at knne sammenligne dem.
+          distanceToEdge[n] = makeNumerical(distanceToEdge[n]);
+        }
+
+        for (int n=0; n<6; n++) { //Der bliver kigget listen igennem
+          if (isLowestinArray(distanceToEdge[n],distanceToEdge)==true) { //Hvis det er det laveste tal i floatarrayet (altså den korteste distance, skal der laves en aktion;)
+            int sideSwitch = 1;
+            if ((n+1)%2==1){ //Fordi jeg før gjorde alle talene numeriske, skal halvdelen nu kunne blive lavet tilbage til deres oprindelige størrelse.
+              sideSwitch =-1;
+            }
+            if (n==0 || n==1){ //Alt efter hvilket indeks det er som er det laveste, skal man rykkes på x,y eller z aksen.
+              cameraAddXPos += distanceToEdge[n]*sideSwitch;
+            }
+            else if (n==2 || n==3){
+              cameraAddZPos += distanceToEdge[n]*sideSwitch;
+            }
+            else if (n==4 || n==5){
+              cameraAddYPos += distanceToEdge[n]*sideSwitch;
+            }
           }
-        }
-
-
-        if (distanceToEdge[0]<distanceToEdge[1] &&distanceToEdge[0]<distanceToEdge[2] &&distanceToEdge[0]<distanceToEdge[3]&&distanceToEdge[0]<distanceToEdge[4]&&distanceToEdge[0]<distanceToEdge[5]) {
-
-          cameraAddXPos -= distanceToEdge[0];
-        }
-        if (distanceToEdge[1]<distanceToEdge[0] &&distanceToEdge[1]<distanceToEdge[2] &&distanceToEdge[1]<distanceToEdge[3]&&distanceToEdge[1]<distanceToEdge[4]&&distanceToEdge[1]<distanceToEdge[5]) {
-
-          cameraAddXPos += distanceToEdge[1];
-        }
-        if (distanceToEdge[2]<distanceToEdge[1] &&distanceToEdge[2]<distanceToEdge[0] &&distanceToEdge[2]<distanceToEdge[3]&&distanceToEdge[2]<distanceToEdge[4]&&distanceToEdge[2]<distanceToEdge[5]) {
-
-          cameraAddZPos -= distanceToEdge[2];
-        }
-        if (distanceToEdge[3]<distanceToEdge[1] &&distanceToEdge[3]<distanceToEdge[0] &&distanceToEdge[3]<distanceToEdge[2]&&distanceToEdge[3]<distanceToEdge[4]&&distanceToEdge[3]<distanceToEdge[5]) {
-
-          cameraAddZPos += distanceToEdge[3];
-        }
-
-        if (distanceToEdge[4]<distanceToEdge[1] &&distanceToEdge[4]<distanceToEdge[0] &&distanceToEdge[4]<distanceToEdge[3]&&distanceToEdge[4]<distanceToEdge[2]&&distanceToEdge[4]<distanceToEdge[5]) {
-
-          cameraAddYPos -= distanceToEdge[4];
-          if (freeFly == false) {
-            cameraAddYPos = 0;
-          }
-        }
-        if (distanceToEdge[5]<distanceToEdge[1] &&distanceToEdge[5]<distanceToEdge[0] &&distanceToEdge[5]<distanceToEdge[2]&&distanceToEdge[5]<distanceToEdge[4]&&distanceToEdge[5]<distanceToEdge[3]) {
-
-          cameraAddYPos += distanceToEdge[5];
         }
       }
     }
   }
+}
+boolean isLowestinArray(float value, float[] valueList) {
+  float lowestFloat = valueList[0]; //Initere lowestfloat med en tilfældig
+
+  for (int i=0; i<valueList.length; i++) {
+    if (valueList[i]<lowestFloat) { //Tag dem alle i rækkefølge, og hvis de er mindre end det nuværende lowestfloat, bliver det skiftet.
+      lowestFloat=valueList[i];
+    }
+  }
+  if (value==lowestFloat) { //Hvis den værdi vi har spurgt om er det mindste tal, også er det mindste tal, er det sandt.
+    return true;
+  }
+  return false;
 }

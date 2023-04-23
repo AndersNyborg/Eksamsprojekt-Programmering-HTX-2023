@@ -99,7 +99,7 @@ int objectInLine(float centerX, float centerY, float centerZ, float centerHeadin
                 sideCheckingCoords.x+0.1+reverseLookingDirection.x, sideCheckingCoords.y+0.1+reverseLookingDirection.y, sideCheckingCoords.z+0.1+reverseLookingDirection.z)==false) {
 
                 //Hvis false så er det koordinaterne.
-                objectBoxAddition(sideCheckingCoords.x, sideCheckingCoords.y, sideCheckingCoords.z, 5, 5, 5, 255, 0, 0, 0);
+                //objectBoxAddition(sideCheckingCoords.x, sideCheckingCoords.y, sideCheckingCoords.z, 5, 5, 5, 255, 0, 0, 0);
                 break;
               } else {//Hvis ikke så plus vektoren
                 sideCheckingCoords.add(reverseLookingDirection);

@@ -11,7 +11,7 @@ void setView(float viewXCo, float viewYCo, float viewZCo) {
     viewAngleX = degrees(asin(cameraHeading.z));
 
 
-    //Alt nedenunder er fordi asin kun kan give fra 90 til -90 grader.
+    //Alt nedenunder er fordi asin kun kan give fra 90 til -90 grader.  
     if (cameraHeading.z>=0&&cameraHeading.x>0) {
       viewAngleX= viewAngleX+180;
     }
@@ -26,11 +26,6 @@ void setView(float viewXCo, float viewYCo, float viewZCo) {
     }
   }
 
-  void freeFlyMode(boolean wantedState) {
-    freeFly = wantedState;
-  }
-  void changePlayerHeight(float wantedHeight) {
-    playerHeight = wantedHeight;
-  }
+
 
   
