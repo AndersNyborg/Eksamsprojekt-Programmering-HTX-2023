@@ -20,7 +20,7 @@ void updateCamera() {
             startJump(); //Starter hoppet
           }
         } else {//Hvis man ikke står på noget
-          cameraAddYPos=-1; ///////////// DDDDDDDDDDDDDDDDDDDDDEEEEEEEEEEEEEEEETTTTTTTTTTTT EEEEEEEEEEEEEERRRRRRRRR HHHHHHHHHHHHHHH EEEEEEEEEEEEEEEEERRRRRRRRRRRR jeg er nået til
+          calcFallingYAddValue(); //Beregn hvor hurtigt man skal falde
         }
       } else { //Hvis et hop er igang
         calcOngoingJump();
@@ -35,8 +35,8 @@ void updateCamera() {
     }
   } else { //Hvis der ikke er trykket nogen knapper ned
     insideObjectCalc(); //Beregn evt. x,y og z værditillægelser, hvis man er inde i et object
-    if (standingOnground()==false){
-      cameraAddYPos=-1;
+    if (freeFly == false && standingOnground()==false) { //Hvis man skal falde
+      calcFallingYAddValue(); //Beregn hvor hurtigt man skal falde
     }
   }
 
@@ -58,6 +58,14 @@ void resetCameraAddValues() {
   cameraAddZPos=0;
 }
 
+void calcFallingYAddValue() {
+  if (standingOnground()==true) {
+    cameraAddYPos=0;
+  } else {
+
+    cameraAddYPos=-10;
+  }
+}
 
 void updateCameraXZAddValues(IntList keysPressed) {
   //Beregningen for hvad cameraAddXPos osv. skal være fungerer ved at tage en knap ad gangen fra controls listen.
@@ -133,7 +141,7 @@ boolean standingOnground() {
       if (advcollision(//For om ens fødder er i noget
         Map.get(i)[0]-Map.get(i)[3]/2, Map.get(i)[1]-Map.get(i)[4]/2, Map.get(i)[2]-Map.get(i)[5]/2,
         Map.get(i)[0]+Map.get(i)[3]/2, Map.get(i)[1]+Map.get(i)[4]/2, Map.get(i)[2]+Map.get(i)[5]/2,
-        cameraXPos-20, cameraYPos+cameraAddYPos-playerHeight-21, cameraZPos-20,
+        cameraXPos-20, cameraYPos+cameraAddYPos-playerHeight-21 , cameraZPos-20,
         cameraXPos+20, cameraYPos+cameraAddYPos+20, cameraZPos+20)==true) {
         return true;
       }
