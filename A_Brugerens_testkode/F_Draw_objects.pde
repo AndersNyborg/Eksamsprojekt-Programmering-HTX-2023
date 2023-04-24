@@ -1,4 +1,6 @@
 void drawObejcts() {
+
+
     //Her bliver objekterne "tegnet" efter den angivne map.
     pointLight(255, 255, 255, cameraXPos, cameraYPos, cameraZPos); //Standard belysning
     for (int i=0; i<Map.size(); i++) {
@@ -25,4 +27,6 @@ void drawObejcts() {
         popMatrix();
       }
     }
+
+      
   }

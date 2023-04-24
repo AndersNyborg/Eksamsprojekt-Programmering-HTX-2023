@@ -89,6 +89,10 @@ void mouseMoved() {
 
   World.simplified3DmouseMoved();
 }
+void mouseDragged() {
+
+  World.simplified3DmouseMoved();
+}
 
 void mousePressed() {
   int object = World.lookingAt();

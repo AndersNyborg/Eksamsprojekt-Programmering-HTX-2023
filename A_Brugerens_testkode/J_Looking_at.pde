@@ -1,141 +1,103 @@
+
+
 int objectInLine(float centerX, float centerY, float centerZ, float centerHeadingX, float centerHeadingY, float centerHeadingZ, float checkLength) {
-    ArrayList<PVector> checkCoords = new ArrayList<PVector>();
+  ArrayList<PVector> checkCoords = createStartingCoords( centerX, centerY, centerZ, centerHeadingX, centerHeadingY, centerHeadingZ, checkLength); //Danneren arrayliste med PVector hvor man er, plus et koordinat med hvor man kigger hen gange med renderDistance
+  IntList checkObjects = createStartingObjects(); //Laver en liste med alle de objektor som eksistere lige nu.
 
-    PVector centerVector = new PVector(centerX, centerY, centerZ);
-    checkCoords.add(centerVector);
+  while (checkObjects.size()>0) { //Mens at der stadig er objekter at undersøge.
 
-
-    PVector helperOuterCheckVector = new PVector(centerHeadingX-centerX, centerHeadingY-centerY, centerHeadingZ-centerZ);
-    helperOuterCheckVector.normalize();
-    helperOuterCheckVector.mult(checkLength);
+    IntList newCheckObjects = new IntList(); //Lav ny midlertidig checkObjects så der ikke sker interferens med den gamle
+    ArrayList<PVector> newCheckCoords = new ArrayList<PVector>();//Lav ny midlertidig checkCoords så der ikke sker interferens med den gamle
 
 
-    PVector outerCheckVector = new PVector(centerX+helperOuterCheckVector.x, centerY+helperOuterCheckVector.y, centerZ+helperOuterCheckVector.z);
+    for (int vectorI= 0; vectorI<checkCoords.size(); vectorI=vectorI+2) { //Gør igennem hver koordinatsæt for hvad der skal tjekkes.
 
-    checkCoords.add(outerCheckVector);
-
-
-    //objectBoxAddition(outerCheckVector.x,outerCheckVector.y,outerCheckVector.z,100,100,100,255,0,0,0);
-    IntList checkObjects = new IntList();
-    for (int i=0; i<Map.size(); i++) {
-      if (Map.get(i)!=None) {
-        checkObjects.append(i);
-      }
-    }
-    float textX = 0;
-    float textY = 0;
-    float textZ = 0;
-
-    while (checkObjects.size()>0) {
-
-      IntList newCheckObjects = new IntList();
-      ArrayList<PVector> newCheckCoords = new ArrayList<PVector>();
-      //println("checkCoords: "+checkCoords);
-      //println("checkObjects: "+checkObjects);
-
-      for (int vectorI= 0; vectorI<checkCoords.size(); vectorI=vectorI+2) {
-        //Brug det her nedenunder for at vise hvordan det fungerer.
-        //objectBoxAddition(checkCoords.get(vectorI).x, checkCoords.get(vectorI).y, checkCoords.get(vectorI).z, 100, 100, 100, 255, 0, 0, 0);
-        //objectBoxAddition(checkCoords.get(vectorI+1).x, checkCoords.get(vectorI+1).y, checkCoords.get(vectorI+1).z, 100, 100, 100, 255, 0, 0, 0);
-        boolean objectsInsideCheckCoords = false;
-        for (int i=0; i<checkObjects.size(); i++) {
-          if (advcollision(
-            Map.get(checkObjects.get(i))[0]-Map.get(checkObjects.get(i))[3]/2, Map.get(checkObjects.get(i))[1]-Map.get(checkObjects.get(i))[4]/2, Map.get(checkObjects.get(i))[2]-Map.get(checkObjects.get(i))[5]/2,
-            Map.get(checkObjects.get(i))[0]+Map.get(checkObjects.get(i))[3]/2, Map.get(checkObjects.get(i))[1]+Map.get(checkObjects.get(i))[4]/2, Map.get(checkObjects.get(i))[2]+Map.get(checkObjects.get(i))[5]/2,
-            checkCoords.get(vectorI).x, checkCoords.get(vectorI).y, checkCoords.get(vectorI).z,
-            checkCoords.get(vectorI+1).x, checkCoords.get(vectorI+1).y, checkCoords.get(vectorI+1).z)==true) {
-            newCheckObjects.append(checkObjects.get(i));
-
-            objectsInsideCheckCoords=true;
-            textX = checkCoords.get(vectorI).x;
-            textY = checkCoords.get(vectorI).y;
-            textZ = checkCoords.get(vectorI).z;
-          }
-        }
-
-        if (objectsInsideCheckCoords==true) {
-
-
-
-
-          PVector newInnerVector = new PVector(checkCoords.get(vectorI).x, checkCoords.get(vectorI).y, checkCoords.get(vectorI).z);
-          PVector newMiddleVector = new PVector(checkCoords.get(vectorI).x+(checkCoords.get(vectorI+1).x-checkCoords.get(vectorI).x)/2, checkCoords.get(vectorI).y+(checkCoords.get(vectorI+1).y-checkCoords.get(vectorI).y)/2, checkCoords.get(vectorI).z+(checkCoords.get(vectorI+1).z-checkCoords.get(vectorI).z)/2);
-          PVector newOuterVector = new PVector(checkCoords.get(vectorI+1).x, checkCoords.get(vectorI+1).y, checkCoords.get(vectorI+1).z);
-          newCheckCoords.add(newInnerVector);
-          newCheckCoords.add(newMiddleVector);
-          newCheckCoords.add(newMiddleVector);
-          newCheckCoords.add(newOuterVector);
-
-
-
-          float checkSize = ((newInnerVector.x-newMiddleVector.x+newInnerVector.y-newMiddleVector.y+newInnerVector.z-newMiddleVector.z)/3);
-          if (checkSize<0) {
-            checkSize*=-1;
-          }
-
-          if (checkSize<1) {
-            //Find vektor
-
-
-            PVector reverseLookingDirection = new PVector(centerHeadingX-centerX, centerHeadingY-centerY, centerHeadingZ-centerZ);
-            reverseLookingDirection.normalize();
-
-            reverseLookingDirection.mult(-1);
-
-
-            //FIND HVILKEN SIDE:
-
-            //PVector sideCheckingCoords = new PVector(Map.get(newCheckObjects.get(0))[0], Map.get(newCheckObjects.get(0))[1], Map.get(newCheckObjects.get(0))[2]);
-            PVector sideCheckingCoords = new PVector(textX, textY, textZ);
-
-
-            int testCounter = 0;
-            while (true) {
-              testCounter++;
-              if (advcollision(//Check om det minus vektoren giver igen kollision med boksen
-                Map.get(newCheckObjects.get(0))[0]-Map.get(newCheckObjects.get(0))[3]/2, Map.get(newCheckObjects.get(0))[1]-Map.get(newCheckObjects.get(0))[4]/2, Map.get(newCheckObjects.get(0))[2]-Map.get(newCheckObjects.get(0))[5]/2,
-                Map.get(newCheckObjects.get(0))[0]+Map.get(newCheckObjects.get(0))[3]/2, Map.get(newCheckObjects.get(0))[1]+Map.get(newCheckObjects.get(0))[4]/2, Map.get(newCheckObjects.get(0))[2]+Map.get(newCheckObjects.get(0))[5]/2,
-                sideCheckingCoords.x-0.1+reverseLookingDirection.x, sideCheckingCoords.y-0.1+reverseLookingDirection.y, sideCheckingCoords.z-0.1+reverseLookingDirection.z,
-                sideCheckingCoords.x+0.1+reverseLookingDirection.x, sideCheckingCoords.y+0.1+reverseLookingDirection.y, sideCheckingCoords.z+0.1+reverseLookingDirection.z)==false) {
-
-                //Hvis false så er det koordinaterne.
-                //objectBoxAddition(sideCheckingCoords.x, sideCheckingCoords.y, sideCheckingCoords.z, 5, 5, 5, 255, 0, 0, 0);
-                break;
-              } else {//Hvis ikke så plus vektoren
-                sideCheckingCoords.add(reverseLookingDirection);
-
-                if (testCounter==30) { //For en sikkerhedskyld
-                  break;
-                }
-              }
-              
-            }
-            
-            return  newCheckObjects.get(0);
-          }
+      for (int i=0; i<checkObjects.size(); i++) { //Der rendes igennem alle de objektor der skal tjekkes.
+        if (isObjectInsideboundary(checkObjects.get(i), vectorI, checkCoords)==true) { //Hvis at objektet er indefor afgrænsnignen af det koordinatsæt der tjekkes for
+          newCheckObjects.append(checkObjects.get(i)); //bliver objektet tilføjet til hvad der også skal tjekkes næste gang.
         }
       }
-      //println("checkCoords: "+newCheckCoords);
-      //println("checkObjects: "+ newCheckObjects);
 
-      checkCoords = newCheckCoords;
-      checkObjects = newCheckObjects;
 
-      //println("checkCoords: " +checkCoords);
-      //println("checkObjects.size():" +checkObjects.size());
+      if (newCheckObjects.size()>0) { //Hvis der stadig er objektor indenfor afgrænsningen
+        float checkSize = ((checkCoords.get(vectorI).x-checkCoords.get(vectorI+1).x+checkCoords.get(vectorI).y-checkCoords.get(vectorI+1).y+checkCoords.get(vectorI).z-checkCoords.get(vectorI+1).z)/3);
+        checkSize = makeNumerical(checkSize); //Ovenover samt her bliver der beregnet for stor afgræsningen er.
+
+        if (checkSize<1) { //Hvis afgrænsningsstørrelsen er mindre end 1, skal funktionen retunere svaret.
+          objectBoxAddition(checkCoords.get(vectorI).x, checkCoords.get(vectorI).y, checkCoords.get(vectorI).z, 5, 5, 5, 0, 255, 0, 0);
+          finishLookingAt = false;
+          return  newCheckObjects.get(0); //HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRR der skal tilføjes så  jeg kan finde hvilket side er på.
+        } else { //Ellers skal afgrænsnigen blive halveret:
+
+
+          PVector newInnerVector = new PVector(checkCoords.get(vectorI).x, checkCoords.get(vectorI).y, checkCoords.get(vectorI).z); //Den første del af koordinatsættet for hvor der er undersøgt.
+          PVector newMiddleVector = new PVector(checkCoords.get(vectorI).x+(checkCoords.get(vectorI+1).x-checkCoords.get(vectorI).x)/2, checkCoords.get(vectorI).y+(checkCoords.get(vectorI+1).y-checkCoords.get(vectorI).y)/2, checkCoords.get(vectorI).z+(checkCoords.get(vectorI+1).z-checkCoords.get(vectorI).z)/2);//Midt imellem de to koordinater
+          PVector newOuterVector = new PVector(checkCoords.get(vectorI+1).x, checkCoords.get(vectorI+1).y, checkCoords.get(vectorI+1).z);//Den sidste del af koordinatsættet for hvor der er undersøgt.
+          newCheckCoords.add(newInnerVector); //Første del af første koordinatsæt til næste gennemgang
+          newCheckCoords.add(newMiddleVector);//anden del af første koordinatsæt til næste gennemgang
+          newCheckCoords.add(newMiddleVector);//Første del af anden koordinatsæt til næste gennemgang
+          newCheckCoords.add(newOuterVector);//anden del af anden koordinatsæt til næste gennemgang
+        }
+      }
     }
 
 
-    return 100;
+    checkCoords = newCheckCoords; //Værdierne bliver erstattet af de nye beregnede værdier.
+    checkObjects = newCheckObjects;
   }
 
-  int lookingAt() {
-    return objectInLine(cameraXPos, cameraYPos, cameraZPos, cameraViewXPos+cameraXPos, cameraViewYPos+cameraYPos, cameraViewZPos+cameraZPos, float(renderDistance));
+  finishLookingAt = false;
+  return 100; //Retunere hvis der ikke bliver set noget.
+}
+boolean finishLookingAt = true;
+int lookingAt() {
+  if (finishLookingAt==false) {
+    finishLookingAt = true;
+    return objectInLine(cameraXPos, cameraYPos, cameraZPos, cameraViewXPos+cameraXPos, cameraViewYPos+cameraYPos, cameraViewZPos+cameraZPos, float(renderDistance)); //For at gøre det lettere for brugeren at broge funktionen
   }
-
-  boolean objectExist(int index) {
-    if (Map.get(index)==None) {
-      return false;
-    }
+  return 0;
+}
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//---------------------------------------------------------------------------------------------------------------------Hjælpefunktioner------------------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+boolean isObjectInsideboundary(int object1, int object2, ArrayList<PVector> object2List) {
+  if (advcollision(
+    Map.get(object1)[0]-Map.get(object1)[3]/2, Map.get(object1)[1]-Map.get(object1)[4]/2, Map.get(object1)[2]-Map.get(object1)[5]/2,
+    Map.get(object1)[0]+Map.get(object1)[3]/2, Map.get(object1)[1]+Map.get(object1)[4]/2, Map.get(object1)[2]+Map.get(object1)[5]/2,
+    object2List.get(object2).x, object2List.get(object2).y, object2List.get(object2).z,
+    object2List.get(object2+1).x, object2List.get(object2+1).y, object2List.get(object2+1).z)==true) {
     return true;
   }
+  return false;
+}
+
+ArrayList<PVector> createStartingCoords(float centerX, float centerY, float centerZ, float centerHeadingX, float centerHeadingY, float centerHeadingZ, float checkLength) {
+  ArrayList<PVector> calcCheckCoords = new ArrayList<PVector>();
+
+  PVector centerVector = new PVector(centerX, centerY, centerZ);
+  calcCheckCoords.add(centerVector);
+
+
+  PVector helperOuterCheckVector = new PVector(centerHeadingX-centerX, centerHeadingY-centerY, centerHeadingZ-centerZ);
+  helperOuterCheckVector.normalize();
+  helperOuterCheckVector.mult(checkLength);
+
+
+  PVector outerCheckVector = new PVector(centerX+helperOuterCheckVector.x, centerY+helperOuterCheckVector.y, centerZ+helperOuterCheckVector.z);
+
+  calcCheckCoords.add(outerCheckVector);
+
+  return calcCheckCoords;
+}
+IntList createStartingObjects() {
+
+  IntList calcCheckObjects = new IntList();
+  for (int i=0; i<Map.size(); i++) {
+    if (Map.get(i)!=None) {
+      calcCheckObjects.append(i);
+    }
+  }
+  return calcCheckObjects;
+}
