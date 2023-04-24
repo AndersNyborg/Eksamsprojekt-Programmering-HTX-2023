@@ -1,14 +1,14 @@
 void setView(float viewXCo, float viewYCo, float viewZCo) {
-    PVector cameraHeading = new PVector(viewXCo-cameraXPos, viewYCo-cameraYPos, viewZCo-cameraZPos);
-    cameraHeading.normalize();
+    PVector cameraHeading = new PVector(viewXCo-cameraXPos, viewYCo-cameraYPos, viewZCo-cameraZPos); //Lave en vektor fra hvor man er til hvor man vil kigge hen.
+    cameraHeading.normalize(); //Lav vektoren om til en længde på 1.
 
-    cameraViewXPos = cameraHeading.x;
+    cameraViewXPos = cameraHeading.x; //Sæt viewet til man kigger hen.
     cameraViewYPos = cameraHeading.y;
     cameraViewZPos = cameraHeading.z;
 
-    viewAngleY = degrees(asin(cameraHeading.y));
+    viewAngleY = degrees(asin(cameraHeading.y)); //Beregn hvad viewangle Y skal være
 
-    viewAngleX = degrees(asin(cameraHeading.z));
+    viewAngleX = degrees(asin(cameraHeading.z)); //Beregn hcad viewangleX skal være, der skal ikke både bruges cameraHeading.z og cameraHeading.x, da de begge normalt er baseret på viewAngleX.
 
 
     //Alt nedenunder er fordi asin kun kan give fra 90 til -90 grader.  

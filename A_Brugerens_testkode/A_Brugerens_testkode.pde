@@ -71,20 +71,6 @@ void draw() {
     World.changeObject(rykkeKasse, "xPos", World.objectInfo(rykkeKasse, "xPos")+rykkeKasseAdd);
   }
 
-
-  //for (int i = 0; i<36;i++){
-
-
-  //  if (World.objectExist(test[i])==true){
-  //  World.changeObject(test[i],"yPos",World.objectInfo(test[i],"yPos")+1);
-  //  }
-  //}
-  //println(World.lookingAt());
-
-  //if (frameCount==200){
-  //  println(World.lookingAt());
-  //}
-  //World.changeObject(World.lookingAt(),"fillr",255);
 }
 
 void keyPressed() {

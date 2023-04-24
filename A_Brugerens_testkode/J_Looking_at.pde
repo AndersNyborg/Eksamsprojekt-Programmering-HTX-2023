@@ -139,4 +139,3 @@ int objectInLine(float centerX, float centerY, float centerZ, float centerHeadin
     }
     return true;
   }
-}

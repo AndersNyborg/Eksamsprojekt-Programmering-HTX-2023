@@ -30,7 +30,7 @@ boolean advcollision(float object1XCo1, float object1YCo1, float object1ZCo1, fl
     objectCenterCoDifference[2] = objectsCenterCo[2]-objectsCenterCo[5];
 
     for (int i=0; i<3; i++) {
-      objectCenterCoDifference[i] = makeNumerical(objectCenterCoDifference[i])
+      objectCenterCoDifference[i] = makeNumerical(objectCenterCoDifference[i]); //Finde differensen
     }
 
 
