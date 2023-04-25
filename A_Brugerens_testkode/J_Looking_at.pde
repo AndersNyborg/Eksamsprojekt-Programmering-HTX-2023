@@ -1,9 +1,13 @@
-
-
-int objectInLine(float centerX, float centerY, float centerZ, float centerHeadingX, float centerHeadingY, float centerHeadingZ, float checkLength) {
+int[] objectInLine(float centerX, float centerY, float centerZ, float centerHeadingX, float centerHeadingY, float centerHeadingZ, float checkLength) {
   ArrayList<PVector> checkCoords = createStartingCoords( centerX, centerY, centerZ, centerHeadingX, centerHeadingY, centerHeadingZ, checkLength); //Danneren arrayliste med PVector hvor man er, plus et koordinat med hvor man kigger hen gange med renderDistance
   IntList checkObjects = createStartingObjects(); //Laver en liste med alle de objektor som eksistere lige nu.
-
+  int[] returnList = new int[5];
+  returnList[0]=0; //Om der er et objekt eller ej alltså 0 eller 1
+  returnList[1]=0; //Hvilket objekt det er
+  returnList[2]=0; //Om det er af X-aksen man har trykket
+  returnList[3]=0;//Om det er af y-aksen man har trykket
+  returnList[4]=0;//Om det er af Z-aksen man har trykket
+  
   while (checkObjects.size()>0) { //Mens at der stadig er objekter at undersøge.
 
     IntList newCheckObjects = new IntList(); //Lav ny midlertidig checkObjects så der ikke sker interferens med den gamle
@@ -24,9 +28,17 @@ int objectInLine(float centerX, float centerY, float centerZ, float centerHeadin
         checkSize = makeNumerical(checkSize); //Ovenover samt her bliver der beregnet for stor afgræsningen er.
 
         if (checkSize<1) { //Hvis afgrænsningsstørrelsen er mindre end 1, skal funktionen retunere svaret.
-          objectBoxAddition(checkCoords.get(vectorI).x, checkCoords.get(vectorI).y, checkCoords.get(vectorI).z, 5, 5, 5, 0, 255, 0, 0);
-          finishLookingAt = false;
-          return  newCheckObjects.get(0); //HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHEEEEEEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRR der skal tilføjes så  jeg kan finde hvilket side er på.
+          //objectBoxAddition(checkCoords.get(vectorI).x, checkCoords.get(vectorI).y, checkCoords.get(vectorI).z, 5, 5, 5, 0, 255, 0, 0);
+          int[] sideOfBlockCoords = sideOfBlock(objectInfo(newCheckObjects.get(0),"xPos")-objectInfo(newCheckObjects.get(0),"xDim")/2,objectInfo(newCheckObjects.get(0),"yPos")-objectInfo(newCheckObjects.get(0),"yDim")/2,objectInfo(newCheckObjects.get(0),"zPos")-objectInfo(newCheckObjects.get(0),"zDim")/2,
+                      objectInfo(newCheckObjects.get(0),"xPos")+objectInfo(newCheckObjects.get(0),"xDim")/2,objectInfo(newCheckObjects.get(0),"yPos")+objectInfo(newCheckObjects.get(0),"yDim")/2,objectInfo(newCheckObjects.get(0),"zPos")+objectInfo(newCheckObjects.get(0),"zDim")/2,
+                      checkCoords.get(vectorI).x, checkCoords.get(vectorI).y, checkCoords.get(vectorI).z);
+          returnList[0]=1;
+          returnList[1]=newCheckObjects.get(0);
+          returnList[2]=sideOfBlockCoords[0];
+          returnList[3]=sideOfBlockCoords[1];
+          returnList[4]=sideOfBlockCoords[2];
+          
+          return returnList; 
         } else { //Ellers skal afgrænsnigen blive halveret:
 
 
@@ -46,16 +58,14 @@ int objectInLine(float centerX, float centerY, float centerZ, float centerHeadin
     checkObjects = newCheckObjects;
   }
 
-  finishLookingAt = false;
-  return 100; //Retunere hvis der ikke bliver set noget.
+
+  return returnList; //Retunere hvis der ikke bliver set noget.
 }
 boolean finishLookingAt = true;
-int lookingAt() {
-  if (finishLookingAt==false) {
-    finishLookingAt = true;
+int[] lookingAt() {
+
     return objectInLine(cameraXPos, cameraYPos, cameraZPos, cameraViewXPos+cameraXPos, cameraViewYPos+cameraYPos, cameraViewZPos+cameraZPos, float(renderDistance)); //For at gøre det lettere for brugeren at broge funktionen
-  }
-  return 0;
+
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//

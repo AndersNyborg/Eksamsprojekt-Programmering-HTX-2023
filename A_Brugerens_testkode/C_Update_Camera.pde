@@ -68,13 +68,13 @@ void calcFallingYAddValue() {
   } else {
 
     fallingSpeed += 0.75; //Hvis man ikke står på jorden, skal man falde hurtigere og hurtigere
-    int objectUnderFeet = objectInLine(cameraXPos, cameraYPos, cameraZPos, cameraXPos, cameraYPos-1, cameraZPos, playerHeight+21+fallingSpeed); //Find ud af hvilket object der er under fødderne
+    int[] objectUnderFeet = objectInLine(cameraXPos, cameraYPos, cameraZPos, cameraXPos, cameraYPos-1, cameraZPos, playerHeight+21+fallingSpeed); //Find ud af hvilket object der er under fødderne
 
-    if (objectUnderFeet==100 || -1*makeNumerical((objectInfo(objectUnderFeet, "yPos")+objectInfo(objectUnderFeet, "yDim")/2))>fallingSpeed) { //Hvis der ikke er noget object under fødderne eller afstanden ned til til er mere end hvor meget der skal faldes med
+    if (objectUnderFeet[0]==0 || -1*makeNumerical((objectInfo(objectUnderFeet[1], "yPos")+objectInfo(objectUnderFeet[1], "yDim")/2))>fallingSpeed) { //Hvis der ikke er noget object under fødderne eller afstanden ned til til er mere end hvor meget der skal faldes med
       cameraAddYPos=-fallingSpeed;
     } else { //Hvis der er mindre ned til objektet under end, end fallingspeed
-      cameraAddYPos=-1*makeNumerical((cameraYPos-playerHeight-21)-(objectInfo(objectUnderFeet, "yPos")+objectInfo(objectUnderFeet, "yDim")/2)) //beregnelse af hvor langt der er ned til objektet under ens fødder.
-        ;
+      cameraAddYPos=-1*makeNumerical((cameraYPos-playerHeight-21)-(objectInfo(objectUnderFeet[1], "yPos")+objectInfo(objectUnderFeet[1], "yDim")/2)); //beregnelse af hvor langt der er ned til objektet under ens fødder.
+
     }
   }
 }
