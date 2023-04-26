@@ -68,12 +68,12 @@ void calcFallingYAddValue() {
   } else {
 
     fallingSpeed += 0.75; //Hvis man ikke står på jorden, skal man falde hurtigere og hurtigere
-    int[] objectUnderFeet = objectInLine(cameraXPos, cameraYPos, cameraZPos, cameraXPos, cameraYPos-1, cameraZPos, playerHeight+21+fallingSpeed); //Find ud af hvilket object der er under fødderne
+    int[] objectUnderFeet = objectInLine(cameraXPos, cameraYPos, cameraZPos, cameraXPos, cameraYPos-1, cameraZPos, playerHeight+1+fallingSpeed); //Find ud af hvilket object der er under fødderne
 
     if (objectUnderFeet[0]==0 || -1*makeNumerical((objectInfo(objectUnderFeet[1], "yPos")+objectInfo(objectUnderFeet[1], "yDim")/2))>fallingSpeed) { //Hvis der ikke er noget object under fødderne eller afstanden ned til til er mere end hvor meget der skal faldes med
       cameraAddYPos=-fallingSpeed;
     } else { //Hvis der er mindre ned til objektet under end, end fallingspeed
-      cameraAddYPos=-1*makeNumerical((cameraYPos-playerHeight-21)-(objectInfo(objectUnderFeet[1], "yPos")+objectInfo(objectUnderFeet[1], "yDim")/2)); //beregnelse af hvor langt der er ned til objektet under ens fødder.
+      cameraAddYPos=-1*makeNumerical((cameraYPos-playerHeight-1)-(objectInfo(objectUnderFeet[1], "yPos")+objectInfo(objectUnderFeet[1], "yDim")/2)); //beregnelse af hvor langt der er ned til objektet under ens fødder.
 
     }
   }
@@ -158,8 +158,8 @@ boolean standingOnground() {
       if (advcollision(//For om ens fødder er i noget
         Map.get(i)[0]-Map.get(i)[3]/2, Map.get(i)[1]-Map.get(i)[4]/2, Map.get(i)[2]-Map.get(i)[5]/2,
         Map.get(i)[0]+Map.get(i)[3]/2, Map.get(i)[1]+Map.get(i)[4]/2, Map.get(i)[2]+Map.get(i)[5]/2,
-        cameraXPos-20, cameraYPos-playerHeight-21, cameraZPos-20, //der bliver sammenlignet med spillersposition, og der er minusset med -21 og ikke -20, fordi man ikke skal være nede i objektet under end, men bare stå på det.
-        cameraXPos+20, cameraYPos+20, cameraZPos+20)==true) {
+        cameraXPos-20, cameraYPos-playerHeight-1, cameraZPos-20, //der bliver sammenlignet med spillersposition, og der er minusset med -21 og ikke -20, fordi man ikke skal være nede i objektet under end, men bare stå på det.
+        cameraXPos+20, cameraYPos, cameraZPos+20)==true) {
         fallingSpeed = 0;
         return true;
       }
@@ -191,8 +191,8 @@ boolean afterMovementInsideObjectCheck() {
       if (advcollision(//Her sammenlignes om man, når bevægelsen også er talt med, vil komme til at støde ind i noget.
         Map.get(i)[0]-Map.get(i)[3]/2, Map.get(i)[1]-Map.get(i)[4]/2, Map.get(i)[2]-Map.get(i)[5]/2,
         Map.get(i)[0]+Map.get(i)[3]/2, Map.get(i)[1]+Map.get(i)[4]/2, Map.get(i)[2]+Map.get(i)[5]/2,
-        cameraXPos+cameraAddXPos-20, cameraYPos+cameraAddYPos-playerHeight-20, cameraZPos+cameraAddZPos-20,
-        cameraXPos+cameraAddXPos+20, cameraYPos+cameraAddYPos+20, cameraZPos+cameraAddZPos+20)==true) {
+        cameraXPos+cameraAddXPos-20, cameraYPos+cameraAddYPos-playerHeight, cameraZPos+cameraAddZPos-20,
+        cameraXPos+cameraAddXPos+20, cameraYPos+cameraAddYPos, cameraZPos+cameraAddZPos+20)==true) {
         return true;
       }
     }
@@ -207,16 +207,16 @@ void insideObjectCalc() {
       if (advcollision(
         Map.get(i)[0]-Map.get(i)[3]/2, Map.get(i)[1]-Map.get(i)[4]/2, Map.get(i)[2]-Map.get(i)[5]/2, //Er man inde i noget.
         Map.get(i)[0]+Map.get(i)[3]/2, Map.get(i)[1]+Map.get(i)[4]/2, Map.get(i)[2]+Map.get(i)[5]/2,
-        cameraXPos-20, cameraYPos-playerHeight-20, cameraZPos-20,
-        cameraXPos+20, cameraYPos+20, cameraZPos+20)==true) { //Hvis ja så skal der nu regnes ud hvilken vej man skal skubbes for at komme mest naturlig ud.
+        cameraXPos-20, cameraYPos-playerHeight, cameraZPos-20,
+        cameraXPos+20, cameraYPos, cameraZPos+20)==true) { //Hvis ja så skal der nu regnes ud hvilken vej man skal skubbes for at komme mest naturlig ud.
         float[] distanceToEdge = new float[6]; //Der bliver lavet et floatarray, som skal indeholde hvor langt der er til alle kanter, fra hvor kameraet et nu.
 
         distanceToEdge[0] = Map.get(i)[0]-Map.get(i)[3]/2-cameraXPos-20; //Først hvor der står alt det med Map findes x-koordinatet til det ene punkt (og derved hele kanten) herefter fratakkes cameraXpositoinen, for derved at få differensen mellem kamerapunktet og  kanten. til sidst trækkes de 20 fra, som stammer fra at vi søger inden for et 20 pixels område
         distanceToEdge[1] = Map.get(i)[0]+Map.get(i)[3]/2-cameraXPos+20;
         distanceToEdge[2] = Map.get(i)[2]-Map.get(i)[5]/2-cameraZPos-20;
         distanceToEdge[3] = Map.get(i)[2]+Map.get(i)[5]/2-cameraZPos+20;
-        distanceToEdge[4] = Map.get(i)[1]-Map.get(i)[4]/2-cameraYPos-20;
-        distanceToEdge[5] = Map.get(i)[1]+Map.get(i)[4]/2-cameraYPos+playerHeight+20;
+        distanceToEdge[4] = Map.get(i)[1]-Map.get(i)[4]/2-cameraYPos;
+        distanceToEdge[5] = Map.get(i)[1]+Map.get(i)[4]/2-cameraYPos+playerHeight;
 
         for (int n=0; n<6; n++) { //Alle distancerne skal være numeriske for at knne sammenligne dem.
           distanceToEdge[n] = makeNumerical(distanceToEdge[n]);

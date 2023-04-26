@@ -84,25 +84,25 @@ boolean isObjectInsideboundary(int object1, int object2, ArrayList<PVector> obje
 }
 
 ArrayList<PVector> createStartingCoords(float centerX, float centerY, float centerZ, float centerHeadingX, float centerHeadingY, float centerHeadingZ, float checkLength) {
-  ArrayList<PVector> calcCheckCoords = new ArrayList<PVector>();
+  ArrayList<PVector> calcCheckCoords = new ArrayList<PVector>(); //Laver en liste som skal indeholde koordinater for afgrænsninger for hvad der skal tjekkes.
 
-  PVector centerVector = new PVector(centerX, centerY, centerZ);
-  calcCheckCoords.add(centerVector);
-
-
-  PVector helperOuterCheckVector = new PVector(centerHeadingX-centerX, centerHeadingY-centerY, centerHeadingZ-centerZ);
-  helperOuterCheckVector.normalize();
-  helperOuterCheckVector.mult(checkLength);
+  PVector centerVector = new PVector(centerX, centerY, centerZ); //Danner centervektoren, altså hvor man står.
+  calcCheckCoords.add(centerVector); //Og tilføjer den som første koordinat, af et koordinatsæt som skal tjekkes som afgræsning
 
 
-  PVector outerCheckVector = new PVector(centerX+helperOuterCheckVector.x, centerY+helperOuterCheckVector.y, centerZ+helperOuterCheckVector.z);
+  PVector helperOuterCheckVector = new PVector(centerHeadingX-centerX, centerHeadingY-centerY, centerHeadingZ-centerZ); //Bliver bestemt hvilken retning man kigger (Uden at tage hensyn med hvorfra)
+  helperOuterCheckVector.normalize(); //Laver vektoren om til en størrelse på 1
+  helperOuterCheckVector.mult(checkLength); //Og ganger den med hvor langt man vil tjekke
 
-  calcCheckCoords.add(outerCheckVector);
 
-  return calcCheckCoords;
+  PVector outerCheckVector = new PVector(centerX+helperOuterCheckVector.x, centerY+helperOuterCheckVector.y, centerZ+helperOuterCheckVector.z); //Danner herefter anden koordinat, som er del af koordinatsæt, som er hvor man er plus den vej man kigger.
+
+  calcCheckCoords.add(outerCheckVector); //Tilføjer den til hvad der skal tjekkes af afgræsning
+
+  return calcCheckCoords; //Retunere afgrænsningsværdierne.
 }
 IntList createStartingObjects() {
-
+//Denne funktion tilføjer alle blokke der eksistere til en intliste og retunere den. 
   IntList calcCheckObjects = new IntList();
   for (int i=0; i<Map.size(); i++) {
     if (Map.get(i)!=None) {
