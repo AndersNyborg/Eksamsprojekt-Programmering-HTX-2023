@@ -25,6 +25,7 @@ class simplified3D {
   int renderDistance = 3000;
 
   ArrayList<float[]> Map = new ArrayList<float[]>();
+  ArrayList<float[]> MapNoCollision = new ArrayList<float[]>();
   float[] None = new float[0];
 
   void intiliazesimplified3D(float x, float y, float z, float viewX, float viewY, float viewZ) {

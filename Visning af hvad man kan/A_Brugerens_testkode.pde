@@ -6,7 +6,7 @@ float mouseSensivety = 30;
 
 
 float xPos = 100;
-float yPos = 100;
+float yPos = 150;
 float zPos = 0;
 float viewXPos = 0;
 float viewYPos = 0;
@@ -24,7 +24,7 @@ boolean lockCamera = false;
 void setup() {
   fullScreen(P3D);
   World.intiliazesimplified3D(xPos, yPos, zPos, viewXPos, viewYPos, viewZPos);
-
+  World.changePlayerHeight(150);
   World.freeFlyMode(false);
 
   Kasse1 = World.objectBoxAddition(0, 0, 400, 100, 100, 100, 255, 0, 0, 0); //Rød
