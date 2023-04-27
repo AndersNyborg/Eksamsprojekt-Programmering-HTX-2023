@@ -1,6 +1,8 @@
 import java.awt.Robot;
 Robot robot;
 
+
+
 float movementSpeed = 10;
 float mouseSensivety = 30;
 
@@ -23,6 +25,7 @@ int[] test = new int[36];
 boolean lockCamera = false;
 void setup() {
   fullScreen(P3D);
+
   World.intiliazesimplified3D(xPos, yPos, zPos, viewXPos, viewYPos, viewZPos);
   World.changePlayerHeight(150);
   World.freeFlyMode(false);
@@ -54,9 +57,7 @@ void draw() {
 
 
   background(255);
-  World.drawObejcts();
-  World.updateCamera();
-
+  
   if (World.collision(rykkeKasse, ståKasse1)==true ||World.collision(rykkeKasse, ståKasse2)==true) {
     rykkeKasseAdd*=-1;
   }
@@ -64,6 +65,13 @@ void draw() {
   if (World.objectExist(rykkeKasse)==true) {
     World.changeObject(rykkeKasse, "xPos", World.objectInfo(rykkeKasse, "xPos")+rykkeKasseAdd);
   }
+  
+  
+  World.drawObejcts();
+  World.updateCamera();
+
+    
+  
 }
 
 void keyPressed() {
