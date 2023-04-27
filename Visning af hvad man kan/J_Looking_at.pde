@@ -13,9 +13,9 @@ int[] objectInLine(float centerX, float centerY, float centerZ, float centerHead
     IntList newCheckObjects = new IntList(); //Lav ny midlertidig checkObjects så der ikke sker interferens med den gamle
     ArrayList<PVector> newCheckCoords = new ArrayList<PVector>();//Lav ny midlertidig checkCoords så der ikke sker interferens med den gamle
 
-println (checkObjects.size());
+
 if (checkObjects.size()<100){
- println( checkObjects);
+
 }
     for (int vectorI= 0; vectorI<checkCoords.size(); vectorI=vectorI+2) { //Gør igennem hver koordinatsæt for hvad der skal tjekkes.
   

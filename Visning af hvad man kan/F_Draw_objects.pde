@@ -5,6 +5,7 @@ void drawObejcts() {
     
     
     pointLight(255, 255, 255, cameraXPos, cameraYPos, cameraZPos); //Standard belysning
+    background(255);
     for (int i=0; i<Map.size(); i++) {
       if (objectExist(i)==true) {
         pushMatrix();

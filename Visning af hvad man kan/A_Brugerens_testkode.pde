@@ -10,9 +10,9 @@ float mouseSensivety = 30;
 float xPos = 100;
 float yPos = 150;
 float zPos = 0;
-float viewXPos = 0;
-float viewYPos = 0;
-float viewZPos = -10;
+float viewXPos = xPos-1;
+float viewYPos = yPos+0;
+float viewZPos = zPos+0;
 
 
 simplified3D World = new simplified3D();
@@ -25,10 +25,10 @@ int[] test = new int[36];
 boolean lockCamera = false;
 void setup() {
   fullScreen(P3D);
-
+  
   World.intiliazesimplified3D(xPos, yPos, zPos, viewXPos, viewYPos, viewZPos);
   World.changePlayerHeight(150);
-  World.freeFlyMode(false);
+  World.freeFlyMode(true);
 
   Kasse1 = World.objectBoxAddition(0, 0, 400, 100, 100, 100, 255, 0, 0, 0); //Rød
   Kasse2 = World.objectBoxAddition(0, -100, 400, 100, 100, 100, 0, 255, 0, 0); //Grøn
@@ -55,9 +55,6 @@ void setup() {
 
 void draw() {
 
-
-  background(255);
-  
   if (World.collision(rykkeKasse, ståKasse1)==true ||World.collision(rykkeKasse, ståKasse2)==true) {
     rykkeKasseAdd*=-1;
   }

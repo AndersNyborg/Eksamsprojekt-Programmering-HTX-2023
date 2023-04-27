@@ -12,5 +12,18 @@ boolean objectExist(int index) {
   }
   return true;
 }
-
+float[] getPlayerPos() {
+  float[] playerPos = new float[3];
+  playerPos[0] = cameraXPos;
+  playerPos[1] = cameraYPos;
+  playerPos[2] = cameraZPos;
+  return playerPos;
+}
+float[] getPlayerHeading() {
+  float[] playerHeading = new float[3];
+  playerHeading[0] = cameraViewXPos;
+  playerHeading[1] = cameraViewYPos;
+  playerHeading[2] = cameraViewZPos;
+  return playerHeading;
+}
 }
