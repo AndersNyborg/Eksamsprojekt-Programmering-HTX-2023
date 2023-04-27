@@ -49,18 +49,25 @@ boolean collision(int object1, int object2) { //En hjælpefunktion, for kollisio
   if (Map.get(object1)==None||Map.get(object2)==None) { //Hvis der er en af objekterne som ikke eksistere, kan der ikke være kollision.
     return false;
   }
-  //if (advcollision( //Her bliver funktion advcollision så brugt til at sammenligne for de to objektor:
-  //  Map.get(object1)[0]-Map.get(object1)[3]/2, Map.get(object1)[1]-Map.get(object1)[4]/2, Map.get(object1)[2]-Map.get(object1)[5]/2,
-  //  Map.get(object1)[0]+Map.get(object1)[3]/2, Map.get(object1)[1]+Map.get(object1)[4]/2, Map.get(object1)[2]+Map.get(object1)[5]/2,
-  //  Map.get(object2)[0]-Map.get(object2)[3]/2, Map.get(object2)[1]-Map.get(object2)[4]/2, Map.get(object2)[2]-Map.get(object2)[5]/2,
-  //  Map.get(object2)[0]+Map.get(object2)[3]/2, Map.get(object2)[1]+Map.get(object2)[4]/2, Map.get(object2)[2]+Map.get(object2)[5]/2)==true) {
-  //  return true;
-  //}
   if (advcollision( //Her bliver funktion advcollision så brugt til at sammenligne for de to objektor:
     objectInfo(object1, "xPos")-objectInfo(object1, "xDim")/2, objectInfo(object1, "yPos")-objectInfo(object1, "yDim")/2, objectInfo(object1, "zPos")-objectInfo(object1, "zDim")/2, //Udregn hjørnet
     objectInfo(object1, "xPos")+objectInfo(object1, "xDim")/2, objectInfo(object1, "yPos")+objectInfo(object1, "yDim")/2, objectInfo(object1, "zPos")+objectInfo(object1, "zDim")/2,
-    objectInfo(object2, "xPos")-objectInfo(object2, "xDim")/2, objectInfo(object2, "yPos")-objectInfo(object2, "yDim")/2, objectInfo(object2, "zPos")-objectInfo(object2, "zDim")/2, 
+    objectInfo(object2, "xPos")-objectInfo(object2, "xDim")/2, objectInfo(object2, "yPos")-objectInfo(object2, "yDim")/2, objectInfo(object2, "zPos")-objectInfo(object2, "zDim")/2,
     objectInfo(object2, "xPos")+objectInfo(object2, "xDim")/2, objectInfo(object2, "yPos")+objectInfo(object2, "yDim")/2, objectInfo(object2, "zPos")+objectInfo(object2, "zDim")/2) == true) {
+    return true;
+  }
+  return false;
+}
+boolean insideCollision(int object1, int object2) { //En hjælpefunktion, for kollision mellem to objektor.
+  float insideBuffer = 0.0001;
+  if (Map.get(object1)==None||Map.get(object2)==None) { //Hvis der er en af objekterne som ikke eksistere, kan der ikke være kollision.
+    return false;
+  }
+  if (advcollision( //Her bliver funktion advcollision så brugt til at sammenligne for de to objektor:
+    objectInfo(object1, "xPos")-(objectInfo(object1, "xDim")-insideBuffer)/2, objectInfo(object1, "yPos")-(objectInfo(object1, "yDim")-insideBuffer)/2, objectInfo(object1, "zPos")-(objectInfo(object1, "zDim")-insideBuffer)/2, //Udregn hjørnet
+    objectInfo(object1, "xPos")+(objectInfo(object1, "xDim")-insideBuffer)/2, objectInfo(object1, "yPos")+(objectInfo(object1, "yDim")-insideBuffer)/2, objectInfo(object1, "zPos")+(objectInfo(object1, "zDim")-insideBuffer)/2,
+    objectInfo(object2, "xPos")-(objectInfo(object2, "xDim")-insideBuffer)/2, objectInfo(object2, "yPos")-(objectInfo(object2, "yDim")-insideBuffer)/2, objectInfo(object2, "zPos")-(objectInfo(object2, "zDim")-insideBuffer)/2,
+    objectInfo(object2, "xPos")+(objectInfo(object2, "xDim")-insideBuffer)/2, objectInfo(object2, "yPos")+(objectInfo(object2, "yDim")-insideBuffer)/2, objectInfo(object2, "zPos")+(objectInfo(object2, "zDim")-insideBuffer)/2) == true) {
     return true;
   }
   return false;

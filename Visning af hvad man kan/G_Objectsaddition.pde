@@ -1,4 +1,4 @@
-  int objectBoxAddition(float objectXPos, float objectYPos, float objectZPos, float objectXDim, float objectYDim, float objectZDim, float fillr, float fillg, float fillb, float stroke) {
+  int advObjectBoxAddition(float objectXPos, float objectYPos, float objectZPos, float objectXDim, float objectYDim, float objectZDim, float fillr, float fillg, float fillb, float stroke) {
     //Her tilføjes en stringlist med et objekt altså kasse eller sådan.
     float[] Genstand = new float[10];
     Genstand[0] = objectXPos;
