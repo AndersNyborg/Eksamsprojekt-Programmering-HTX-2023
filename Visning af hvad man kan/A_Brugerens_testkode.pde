@@ -24,7 +24,7 @@ float rykkeKasseAdd = 1;
 int[] test = new int[36];
 boolean lockCamera = false;
 void setup() {
-  fullScreen(P3D);
+  fullScreen(P3D,1);
   
   World.intiliazesimplified3D(xPos, yPos, zPos, viewXPos, viewYPos, viewZPos);
   World.changePlayerHeight(150);
@@ -106,7 +106,5 @@ void mousePressed() {
       World.deleteObject(object[1]);
     }
   }
-  //if (object[0] == 1) {
-  //  World.deleteObject(object[1]);
-  //}
+
 }

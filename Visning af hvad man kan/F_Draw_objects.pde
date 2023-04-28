@@ -11,20 +11,20 @@ void drawObejcts() {
         pushMatrix();
 
         //Fill (Farve)
-        fill(Map.get(i)[6], Map.get(i)[7], Map.get(i)[8]);
+        fill(objectInfo(i,"fillr"), objectInfo(i,"fillg"), objectInfo(i,"fillb"));
 
         //Position via translate
-        translate(Map.get(i)[0], Map.get(i)[1], Map.get(i)[2]);
+        translate(objectInfo(i,"xPos"), objectInfo(i,"yPos"), objectInfo(i,"zPos"));
 
         //Stroke
-        if (Map.get(i)[9]<1) {
+        if (objectInfo(i,"stroke")<1) {
           noStroke();
         } else {
-          stroke(Map.get(i)[9]);
+          stroke(objectInfo(i,"stroke"));
         }
 
 
-        box(Map.get(i)[3], Map.get(i)[4], Map.get(i)[5]); //Danne box
+        box(objectInfo(i,"xDim"), objectInfo(i,"yDim"),objectInfo(i,"zDim")); //Danne box
 
 
         popMatrix();

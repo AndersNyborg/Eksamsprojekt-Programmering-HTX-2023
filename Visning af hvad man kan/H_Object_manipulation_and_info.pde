@@ -24,7 +24,7 @@
     valuesForObject.append("fillb");
     valuesForObject.append("stroke");
 
-    int index=0;
+    int index=-1;
     for (int i = 0; i<valuesForObject.size(); i++) {
 
       if ( valuesForObject.get(i)==variable) {
@@ -56,7 +56,7 @@
     valuesForObject.append("fillb");
     valuesForObject.append("stroke");
 
-    int index = 0;
+    int index = -1;
     for (int i = 0; i<valuesForObject.size(); i++) {
 
       if ( valuesForObject.get(i)==variable) {
