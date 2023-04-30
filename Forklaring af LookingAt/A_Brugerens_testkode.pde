@@ -5,22 +5,18 @@ Robot robot;
 
 
 
-float xPos = 100;
-float yPos = 150;
-float zPos = 0;
-float viewXPos = xPos-1;
-float viewYPos = yPos+0;
-float viewZPos = zPos+0;
+float xPos = -400;
+float yPos = 900;
+float zPos = -1000;
+float viewXPos = xPos+1;
+float viewYPos = yPos-1.4;
+float viewZPos = zPos+3;
 
 
 simplified3D World = new simplified3D();
 
-int  Kasse1, Kasse2, Kasse3, Kasse4, ståKasse1, ståKasse2, rykkeKasse;
+int gulv,mand;
 
-float rykkeKasseAdd = 1;
-
-int[] test = new int[36];
-boolean lockCamera = false;
 void setup() {
   fullScreen(P3D,1);
   
@@ -28,42 +24,28 @@ void setup() {
   World.changePlayerHeight(150);
   World.freeFlyMode(true);
 
-  Kasse1 = World.advObjectBoxAddition(0, 0, 400, 100, 100, 100, 255, 0, 0, 0); //Rød
-  Kasse2 = World.advObjectBoxAddition(0, -100, 400, 100, 100, 100, 0, 255, 0, 0); //Grøn
-  Kasse3 = World.advObjectBoxAddition(100, -100, 400, 100, 100, 100, 0, 0, 255, 0); //Blue
-  Kasse4 = World.advObjectBoxAddition(-100, 100, 400, 100, 100, 100, 155, 155, 155, 0); //grå
-  World.advObjectBoxAddition(0, 0, 0, 100, 100, 100, 155, 155, 155, 0);
-
-  ståKasse1 = World.advObjectBoxAddition(-300, 0, -400, 100, 100, 100, 155, 155, 155, 0);
-  ståKasse2 = World.advObjectBoxAddition(300, 0, -400, 100, 100, 100, 155, 155, 155, 0);
-  rykkeKasse = World.advObjectBoxAddition(0, -50, -400, 100, 70, 300, 155, 155, 155, 0);
-
-  World.advObjectBoxAddition(0, 180, 0, 100, 100, 100, 155, 155, 155, 0); //grå
-
-
-  int counter = 0;
-  for (int x=-300; x<300; x=x+100) {
-    for (int z=-300; z<300; z=z+100) {
-
-      test[counter]= World.advObjectBoxAddition(x, -100, z, 100, 10, 100, 155, 155, 155, 2);
-      counter++;
-    }
+  gulv = World.advObjectBoxAddition(0, 0, 0, 500, 20, 500, 155, 155, 155, 10); //Grå
+  mand =  World.advObjectBoxAddition(0, 75, 0, 20, 150, 50, 0, 0, 255, 10); //Blå
+  
+  for (int i=0;i<800;i++){
+    World.advObjectBoxAddition(0+i, 120+i, i, 1, 1, 1, 255, 0, 0, 10); //Rød
   }
+  World.advObjectBoxAddition(500, 120+500-50, 500-50, 100, 100, 100, 155, 255, 155, 10); //Blå Kassen der bliver kigget på
+  World.advObjectBoxAddition(500, 120+500-50+100, 500-50, 100, 100, 100, 155, 155, 155, 10); //Grå kasse over den blå kasse der bliver kigget på
+  World.advObjectBoxAddition(500, 120+500-50-100, 500-50, 100, 100, 100, 155, 155, 155, 10); //Grå kasse under den blå kasse der bliver kigget på
+  World.advObjectBoxAddition(500, 120+500-50, 500+100-50, 100, 100, 100, 155, 155, 155, 10); //Grå kasse til venstre den blå kasse der bliver kigget på
+  World.advObjectBoxAddition(500, 120+500-50, 500-100-50, 100, 100, 100, 155, 155, 155, 10); //Grå kasse til højre den blå kasse der bliver kigget på
+  
+  World.advObjectBoxAddition(0.5*500, 0.5*(120+500)-80, 500, 100, 100, 100, 255, 0, 0, 10); //Grå kasser halvvejs oppe der ikke bliver kigget på
+   
+  //World.advObjectBoxAddition(0.5*(0+800), 0.5*(75+920), 0.5*(0+800), 800, 920-75, 800, 255, 0, 0, 10); //Hele kollisionkasse
+  World.advObjectBoxAddition(0.5*(0+800)*0.5, 0.5*(75+920)*0.5, 0.5*(0+800)*0.5, 800*0.5, (920-75)*0.5, 800*0.5, 255, 0, 0, 10); //Halve kollisionkasse
+  World.advObjectBoxAddition(0.5*(0+800)*1.5, 0.5*(75+920)*1.5, 0.5*(0+800)*1.5, 800*0.5, (920-75)*0.5, 800*0.5, 255, 0, 0, 10); //Halvde kollisionkasse
+
 }
 
 void draw() {
 
-  if (World.collision(rykkeKasse, ståKasse1)==true ||World.collision(rykkeKasse, ståKasse2)==true) {
-    rykkeKasseAdd*=-1;
-  }
-  //World.setView(World.objectInfo(rykkeKasse,"xPos"),World.objectInfo(rykkeKasse,"yPos"),World.objectInfo(rykkeKasse,"zPos"));
-  if (World.objectExist(rykkeKasse)==true) {
-    World.changeObject(rykkeKasse, "xPos", World.objectInfo(rykkeKasse, "xPos")+rykkeKasseAdd);
-  }
-  
-  if (World.insideCollision(Kasse1, Kasse2)) {
-    print("True");
-  }
   
   World.drawObejcts();
   World.updateCamera();
@@ -75,9 +57,6 @@ void draw() {
 void keyPressed() {
   World.simplified3DkeyPressed();
 
-  if (key == 'h') {
-    World.setView(World.objectInfo(rykkeKasse, "xPos"), World.objectInfo(rykkeKasse, "yPos"), World.objectInfo(rykkeKasse, "zPos"));
-  }
 }
 
 void keyReleased() {

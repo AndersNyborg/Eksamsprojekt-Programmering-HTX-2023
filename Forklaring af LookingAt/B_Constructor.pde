@@ -48,6 +48,6 @@ class simplified3D {
     setView(viewX, viewY, viewZ);
 
 
-    //noCursor();
+    noCursor();
     perspective(PI/3.0, (float) width/height, 1, renderDistance);
   }

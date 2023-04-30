@@ -3,10 +3,6 @@ Robot robot;
 
 
 
-float movementSpeed = 10;
-float mouseSensivety = 30;
-
-
 float xPos = 100;
 float yPos = 150;
 float zPos = 0;
